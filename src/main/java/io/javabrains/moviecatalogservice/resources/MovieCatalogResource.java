@@ -23,9 +23,6 @@ public class MovieCatalogResource {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Autowired
-    private WebClient.Builder webClientBuilder;
-
     @GetMapping("/{userId}")
     public List<CatalogItem> getCatalog(@PathVariable("userId") String userId) {
 
@@ -36,15 +33,7 @@ public class MovieCatalogResource {
 
         return ratings.stream().map(rating -> {
           //depricated in future releases
-            //  Movie movie = restTemplate.getForObject("http://localhost:8082/movies/1", Movie.class);
-
-            //should use WebClient instead of RestTemplate in the future
-            Movie movie = webClientBuilder.build()
-                    .get()
-                    .uri("http://localhost:8082/movies/1" + rating.getMovieId())
-                    .retrieve()
-                    .bodyToMono(Movie.class)
-                    .block();
+             Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), Movie.class);
 
             return new CatalogItem(movie.getName(), "A space saga", rating.getRating());
         })
