@@ -21,6 +21,9 @@ public class Rating {
         this.rating = rating;
     }
 
+    public Rating() {
+    }
+
     public Rating(String movieId, int rating) {
 
         this.movieId = movieId;
