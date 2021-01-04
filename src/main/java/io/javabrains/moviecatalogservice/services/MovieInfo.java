@@ -16,14 +16,14 @@ public class  MovieInfo {
 
 
     @HystrixCommand(fallbackMethod = "getFallbackCatalogItem")
-    private CatalogItem getCatalogItem(Rating rating) {
+    public CatalogItem getCatalogItem(Rating rating) {
         // For each movie ID we call movie info service to get details
         Movie movie = restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(), Movie.class);
         //We are putting everything together here
         return new CatalogItem(movie.getName(), movie.getDescription(), rating.getRating());
     }
 
-    private CatalogItem getFallbackCatalogItem(Rating rating) {
+    public CatalogItem getFallbackCatalogItem(Rating rating) {
         return new CatalogItem("Movie name not found", "Empty description", rating.getRating());
     }
 }
